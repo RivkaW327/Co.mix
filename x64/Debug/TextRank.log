@@ -1,5 +1,6 @@
 ﻿  IntervalTree.cpp
-C:\Users\user\Documents\year2\project\TextRank\TextRank\IntervalTree.cpp(160,16): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\Documents\year2\project\TextRank\TextRank\IntervalTree.cpp(170,16): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  IntervalTreeWrapper.cpp
   main.cpp
   Paragraph.cpp
   bindings.cpp

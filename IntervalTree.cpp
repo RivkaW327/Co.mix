@@ -1,10 +1,7 @@
-
 #include "IntervalTree.h"
 #include <iostream>
 #include <climits>
 #include <memory>
-
-
 
 Node::Node(size_t paragraphIndex, Interval i)
 {
@@ -13,119 +10,126 @@ Node::Node(size_t paragraphIndex, Interval i)
     this->max = i.high;
     this->left = nullptr;
     this->right = nullptr;
-    this->height = 0;
+    this->height = 1; // Initialize to 1, not 0
 }
 
+Node::Node(Interval i) {
+    this->paragraphIndex = 0; // Initialize paragraphIndex
+    this->i = i;
+    this->max = i.high;
+    this->left = nullptr;
+    this->right = nullptr;
+    this->height = 1; // Initialize to 1, not 0
+}
 
-// A utility function to 
-// get the height of the tree 
+// A utility function to get the height of the tree 
 int Node::Getheight() {
     if (this == nullptr)
         return 0;
     return this->height;
 }
 
-// A utility function to right 
-// rotate subtree rooted with y 
+// Helper function to safely get height from shared_ptr
+int getHeight(const std::shared_ptr<Node>& node) {
+    return node ? node->Getheight() : 0;
+}
+
+// A utility function to right rotate subtree rooted with y 
 std::shared_ptr<Node> Node::rightRotate(std::shared_ptr<Node> y) {
-    std::shared_ptr<Node> x = std::move(y->left);
-    if (x == nullptr)
-        return y;
+    if (!y || !y->left) return y;
 
-    std::shared_ptr<Node> T2 = std::move(x->right);
+    std::shared_ptr<Node> x = y->left;
+    std::shared_ptr<Node> T2 = x->right;
 
-    x->right = std::move(y);
-    x->right->left = std::move(T2);
+    // Perform rotation
+    x->right = y;
+    y->left = T2;
 
-    // Update heights and max
-    x->right->updateHeightAndMax();
+    // Update heights and max values
+    y->updateHeightAndMax();
     x->updateHeightAndMax();
 
     return x;
 }
-// A utility function to left rotate 
-// subtree rooted with x 
+
+// A utility function to left rotate subtree rooted with x 
 std::shared_ptr<Node> Node::leftRotate(std::shared_ptr<Node> x) {
-    std::shared_ptr<Node> y = std::move(x->right);
-    if (y == nullptr)
-        return x;
+    if (!x || !x->right) return x;
 
-    std::shared_ptr<Node> T2 = std::move(y->left);
+    std::shared_ptr<Node> y = x->right;
+    std::shared_ptr<Node> T2 = y->left;
 
-    y->left = std::move(x);
-    y->left->right = std::move(T2);
+    // Perform rotation
+    y->left = x;
+    x->right = T2;
 
-    // Update heights and max
-    y->left->updateHeightAndMax();
+    // Update heights and max values
+    x->updateHeightAndMax();
     y->updateHeightAndMax();
 
     return y;
 }
 
-// Get balance factor of node N 
+// Get balance factor of node
 int Node::getBalance() {
-    if (this->left == nullptr)
-    {
-        return 0 - this->right->Getheight();
-    }
-    else if (this->right == nullptr)
-    {
-        return this->left->Getheight();
-    }
-    else
-    {
-        return this->left->Getheight() - this->right->Getheight();
-    }
+    if (this == nullptr) return 0;
+    return getHeight(this->left) - getHeight(this->right);
 }
 
 void Node::updateHeightAndMax() {
     if (!this) return;
-    this->height = 1 + std::max(this->left->Getheight(), this->right->Getheight());
-    this->max = std::max(
-        this->i.high,
-        std::max(
-            (this->left ? this->left->max : INT_MIN),
-            (this->right ? this->right->max : INT_MIN)
-        )
-    );
+
+    // Update height
+    this->height = 1 + std::max(getHeight(this->left), getHeight(this->right));
+
+    // Update max value
+    this->max = this->i.high;
+    if (this->left && this->left->max > this->max) {
+        this->max = this->left->max;
+    }
+    if (this->right && this->right->max > this->max) {
+        this->max = this->right->max;
+    }
 }
 
-
-
 std::shared_ptr<Node> Node::insertTree(std::shared_ptr<Node> root, std::shared_ptr<Node> n) {
+    // Step 1: Perform normal BST insertion
     if (root == nullptr)
         return n;
 
     int n_low = n->i.low;
 
     if (n_low < root->i.low)
-        root->left = insertTree(std::move(root->left), std::move(n));
-    else
-        root->right = insertTree(std::move(root->right), std::move(n));
+        root->left = insertTree(root->left, n);
+    else if (n_low >= root->i.low) // Handle equal case
+        root->right = insertTree(root->right, n);
 
+    // Step 2: Update height and max of current node
+    root->updateHeightAndMax();
+
+    // Step 3: Get balance factor
     int balance = root->getBalance();
 
+    // Step 4: Perform rotations if unbalanced
     // Left Left Case
-    if (balance > 1 && n_low < root->left->i.low)
-        return rightRotate(std::move(root));
+    if (balance > 1 && root->left && n_low < root->left->i.low)
+        return rightRotate(root);
 
     // Right Right Case
-    if (balance < -1 && n_low > root->right->i.low)
-        return leftRotate(std::move(root));
+    if (balance < -1 && root->right && n_low >= root->right->i.low)
+        return leftRotate(root);
 
     // Left Right Case
-    if (balance > 1 && n_low > root->left->i.low) {
-        root->left = leftRotate(std::move(root->left));
-        return rightRotate(std::move(root));
+    if (balance > 1 && root->left && n_low >= root->left->i.low) {
+        root->left = leftRotate(root->left);
+        return rightRotate(root);
     }
 
     // Right Left Case
-    if (balance < -1 && n_low < root->right->i.low) {
-        root->right = rightRotate(std::move(root->right));
-        return leftRotate(std::move(root));
+    if (balance < -1 && root->right && n_low < root->right->i.low) {
+        root->right = rightRotate(root->right);
+        return leftRotate(root);
     }
-
-    root->updateHeightAndMax();
 
     return root;
 }
@@ -134,32 +138,36 @@ bool Node::isOverlapping(Interval i1, Interval i2) {
     return i1.low <= i2.high && i2.low <= i1.high;
 }
 
-// לבדוק מה קורה אם הוא שייך ל2 פסקאות (לא שייך לשום פסקה בודדת)
-
 Node* Node::overlapSearch(Interval i) {
     if (this == nullptr) return nullptr;
 
+    // Check if current interval overlaps with query interval
     if (isOverlapping(this->i, i))
         return this;
 
+    // If left child exists and its max is >= query's low, search left
     if (this->left != nullptr && this->left->max >= i.low)
         return this->left->overlapSearch(i);
 
-    return this->right->overlapSearch(i);
+    // Otherwise search right
+    if (this->right != nullptr)
+        return this->right->overlapSearch(i);
+
+    return nullptr;
 }
 
 void Node::inorder() {
     if (this == nullptr) return;
-    this->left->inorder();
+
+    if (this->left) this->left->inorder();
     std::cout << "[" << this->i.low << ", " << this->i.high << "]"
-        << " max = " << this->max << std::endl;
-    this->right->inorder();
+        << " max = " << this->max
+        << " paragraph = " << this->paragraphIndex << std::endl;
+    if (this->right) this->right->inorder();
 }
 
 int Node::GetParagraphIndex() {
     return this->paragraphIndex;
 }
-
-
 
 Node::~Node() = default;

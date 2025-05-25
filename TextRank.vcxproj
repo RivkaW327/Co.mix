@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="IntervalTree.cpp" />
+    <ClCompile Include="IntervalTreeWrapper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Paragraph.cpp" />
     <ClCompile Include="bindings.cpp" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntervalTree.h" />
+    <ClInclude Include="IntervalTreeWrapper.h" />
     <ClInclude Include="Paragraph.h" />
     <ClInclude Include="text_ranker.h" />
   </ItemGroup>
