@@ -27,12 +27,12 @@ int Node::Getheight() {
 
 // A utility function to right 
 // rotate subtree rooted with y 
-std::unique_ptr<Node> Node::rightRotate(std::unique_ptr<Node> y) {
-    std::unique_ptr<Node> x = std::move(y->left);
+std::shared_ptr<Node> Node::rightRotate(std::shared_ptr<Node> y) {
+    std::shared_ptr<Node> x = std::move(y->left);
     if (x == nullptr)
         return y;
 
-    std::unique_ptr<Node> T2 = std::move(x->right);
+    std::shared_ptr<Node> T2 = std::move(x->right);
 
     x->right = std::move(y);
     x->right->left = std::move(T2);
@@ -45,12 +45,12 @@ std::unique_ptr<Node> Node::rightRotate(std::unique_ptr<Node> y) {
 }
 // A utility function to left rotate 
 // subtree rooted with x 
-std::unique_ptr<Node> Node::leftRotate(std::unique_ptr<Node> x) {
-    std::unique_ptr<Node> y = std::move(x->right);
+std::shared_ptr<Node> Node::leftRotate(std::shared_ptr<Node> x) {
+    std::shared_ptr<Node> y = std::move(x->right);
     if (y == nullptr)
         return x;
 
-    std::unique_ptr<Node> T2 = std::move(y->left);
+    std::shared_ptr<Node> T2 = std::move(y->left);
 
     y->left = std::move(x);
     y->left->right = std::move(T2);
@@ -92,7 +92,7 @@ void Node::updateHeightAndMax() {
 
 
 
-std::unique_ptr<Node> Node::insertTree(std::unique_ptr<Node> root, std::unique_ptr<Node> n) {
+std::shared_ptr<Node> Node::insertTree(std::shared_ptr<Node> root, std::shared_ptr<Node> n) {
     if (root == nullptr)
         return n;
 
@@ -161,3 +161,5 @@ int Node::GetParagraphIndex() {
 }
 
 
+
+Node::~Node() = default;

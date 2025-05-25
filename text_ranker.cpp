@@ -212,7 +212,7 @@ bool TextRanker::InitCharsList(std::vector<Paragraph>& paragraphs, const std::ve
     //std::vector<Interval> ints;
 
 	// init the interval tree
-    std::unique_ptr<Node> root = nullptr;
+    std::shared_ptr<Node> root = nullptr;
     for (size_t i = 0; i < (int)paragraphs.size(); i++)
     {
         //ints.push_back(paragraphs[i].GetPosition());

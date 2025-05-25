@@ -10,4 +10,4 @@ C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(207,14):
 C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(276,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Generating Code...
      Creating library C:\Users\user\Documents\year2\project\TextRank\x64\Debug\TextRank.lib and object C:\Users\user\Documents\year2\project\TextRank\x64\Debug\TextRank.exp
-  TextRank.vcxproj -> C:\Users\user\Documents\year2\project\TextRank\x64\Debug\TextRank.exe
+  TextRank.vcxproj -> C:\Users\user\Documents\year2\project\TextRank\x64\Debug\TextRank.dll
