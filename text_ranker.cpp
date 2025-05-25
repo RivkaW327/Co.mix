@@ -57,29 +57,31 @@ static bool PairComp(std::pair<int, double> a, std::pair<int, double> b)
     return a.second < b.second;
 }
 
-std::vector<std::string> TextRanker::ExtractKeyParagraphs(const std::string& input, std::vector< std::pair<int, int>> paragraphs, std::vector<std::vector<std::pair<int, int>>> characters, int topK)
+// שיחזיר גם רשימת ישויות שנמצאה עבור כל פסקה
+std::map<int, std::set<size_t>> TextRanker::ExtractKeyParagraphs(const std::string& input, std::vector< std::pair<int, int>> paragraphs, std::vector<std::vector<std::pair<int, int>>> entities, int topK)
 {
-    std::vector<std::string> outputs;
+    std::map<int, std::set<size_t>> outputs;
     //outputs.clear();
-    if (input.empty() || topK < 1) {
+    if(input.empty() || topK < 1) {
         return outputs;
     }
 
-    for (size_t i = 0; i < characters.size(); i++)
+    
+    for (size_t i = 0; i < entities.size(); i++)
     {
-        std::vector<Interval> character;
-        for (size_t j = 0; j < characters[i].size(); j++)
+        std::vector<Interval> entity;
+        for (size_t j = 0; j < entities[i].size(); j++)
         {
-            character.push_back({ characters[i][j].first, characters[i][j].second });
+            entity.push_back({ entities[i][j].first, entities[i][j].second });
         }
-        this->mCharacters.push_back(character);
-		//character.clear();
+        this->mEntities.push_back(entity);
+		//entity.clear();
     }
 
     // TextRank
     bool ret = true;
     ret &= ExtractParagraphs(input, paragraphs, this->mParagraphs);
-    ret &= BuildGraph(this->mParagraphs, this->mCharacters);
+    ret &= BuildGraph(this->mParagraphs, this->mEntities);
     ret &= CalcParagraphScores();
 
     if (!ret) {
@@ -98,7 +100,7 @@ std::vector<std::string> TextRanker::ExtractKeyParagraphs(const std::string& inp
 
     for(int i=0; i<topK && i<kDim; ++i) {
         int id = visitPairs[i].first;
-        outputs.push_back(input.substr(mParagraphs[id].GetPosition().low, mParagraphs[id].GetPosition().high - mParagraphs[id].GetPosition().low));
+        outputs[id] = this->mParagraphs[id].GetEntities();
     }
     return outputs;
 }
@@ -112,7 +114,7 @@ bool TextRanker::ExtractParagraphs(const std::string& input,std::vector<std::pai
         return false; 
     }
 
-    static const int maxTextLen = 100000;  // Maximum number of characters (need to consider word separators, UTF encoding, etc.)
+    static const int maxTextLen = 100000;  // Maximum number of entities (need to consider word separators, UTF encoding, etc.)
     std::string tempInput;
     if ((int)input.size() > maxTextLen) {
         tempInput = input.substr(0, maxTextLen);  // Articles that are too long will be truncated
@@ -129,12 +131,12 @@ bool TextRanker::ExtractParagraphs(const std::string& input,std::vector<std::pai
     //}
 
     // Paragraph segmentation
-    static const int minParagraphLen = 40;   // Minimum number of characters in a sentence (need to consider word separators, UTF encoding, etc.)
+    static const int minParagraphLen = 40;   // Minimum number of entities in a sentence (need to consider word separators, UTF encoding, etc.)
     std::vector<Paragraph> tempOutput = BuildParagraphs(input, paragraphs); // split_with_positions(tempInput, "###PARA###");
     std::vector<Paragraph> tempOutput2;
     for (int i=0; i<(int)tempOutput.size(); i++) {
         if ((int)(tempOutput[i].GetPosition().high-tempOutput[i].GetPosition().low) < minParagraphLen) {
-            tempOutput2.push_back(tempOutput[i]);   // The number of characters in a single sentence is too small, so it is discarded.
+            tempOutput2.push_back(tempOutput[i]);   // The number of entities in a single sentence is too small, so it is discarded.
         }
         else {
             outputs.push_back(tempOutput[i]);
@@ -163,7 +165,7 @@ bool TextRanker::ExtractParagraphs(const std::string& input,std::vector<std::pai
 //    return true;
 //}
 
-bool TextRanker::BuildGraph(std::vector<Paragraph>& paragraphs,const std::vector<std::vector<Interval>>& characters)
+bool TextRanker::BuildGraph(std::vector<Paragraph>& paragraphs,const std::vector<std::vector<Interval>>& entities)
 {
     if (paragraphs.empty()) { return false; }
 
@@ -173,7 +175,7 @@ bool TextRanker::BuildGraph(std::vector<Paragraph>& paragraphs,const std::vector
     mAdjacencyMatrix.clear();
     mAdjacencyMatrix.resize(kDim, std::vector<double>(kDim, 0.0));
 
-    InitCharsList(paragraphs, characters); // The words contained in each sentence are made into a `set` in advance to speed up the calculation of GetSimilarity.
+    InitCharsList(paragraphs, entities); // The words contained in each paragraph are made into a `set` in advance to speed up the calculation of GetSimilarity.
 
     for(int i = 0; i < kDim - 1; i++)
     {
@@ -200,7 +202,7 @@ bool TextRanker::BuildGraph(std::vector<Paragraph>& paragraphs,const std::vector
     return true;
 }
 
-bool TextRanker::InitCharsList(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>> characters)
+bool TextRanker::InitCharsList(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>> entities)
 {
     int kDim = paragraphs.size();
     if (paragraphs.empty()) {
@@ -218,17 +220,17 @@ bool TextRanker::InitCharsList(std::vector<Paragraph>& paragraphs, const std::ve
     }
     root->inorder();
 	// check the intervals
-    for (size_t i = 0; i < characters.size(); i++)
+    for (size_t i = 0; i < entities.size(); i++)
     {
-        for (size_t j = 0; j < characters[i].size(); j++)
+        for (size_t j = 0; j < entities[i].size(); j++)
         {
-            Node* res = root->overlapSearch(characters[i][j]);
+            Node* res = root->overlapSearch(entities[i][j]);
             if (res == nullptr)
                 // צריך לבדוק מה לעשות במקרה של דמות שחוצה את הפסקאות
-                std::cout << "\nNo overlaps ["<<characters[i][j].low<<" , "<<characters[i][j].high<<"]\n";
+                std::cout << "\nNo overlaps ["<< entities[i][j].low<<" , "<< entities[i][j].high<<"]\n";
                 // לסדר שאם הוא נמצא בשתיהם אז הקשת שלהם תקבל ניקוד גבוה.
             else
-                paragraphs[res->GetParagraphIndex()].SetCharacters(i);
+                paragraphs[res->GetParagraphIndex()].SetEntities(i);
 
         }
     }
@@ -237,24 +239,24 @@ bool TextRanker::InitCharsList(std::vector<Paragraph>& paragraphs, const std::ve
 
 double TextRanker::GetSimilarity(int a, int b)
 {
-    // if a or b does not contains characters
+    // if a or b does not contains entities
     if (mParagraphs[a].GetCharsNum() == 0 || mParagraphs[b].GetCharsNum() == 0) {
         return 0.0;
     }
 
     //int commonChars = 0;
-    /*for (int val : mParagraphs[a].GetCharacters()) {
-        if (mParagraphs[b].GetCharacters().count(val) > 0) {
+    /*for (int val : mParagraphs[a].GetEntities()) {
+        if (mParagraphs[b].GetEntities().count(val) > 0) {
             commonChars++;
         }
     }*/
 
     std::vector<size_t> commonChars;
 	std::set_intersection(
-		mParagraphs[a].GetCharacters().begin(),
-		mParagraphs[a].GetCharacters().end(),
-		mParagraphs[b].GetCharacters().begin(),
-		mParagraphs[b].GetCharacters().end(),
+		mParagraphs[a].GetEntities().begin(),
+		mParagraphs[a].GetEntities().end(),
+		mParagraphs[b].GetEntities().begin(),
+		mParagraphs[b].GetEntities().end(),
 		std::back_inserter(commonChars)
 	);
     

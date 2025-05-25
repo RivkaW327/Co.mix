@@ -10,14 +10,14 @@ class Paragraph
 
 public:
 	// Constructor
-	Paragraph() : mPosition({ 0, 0 }), mCharsNum(0) {}
+	Paragraph() : mPosition({ 0, 0 }), mEntitiesNum(0) {}
 	Paragraph(Interval position)
-		: mPosition(position), mCharsNum(0) { }
+		: mPosition(position), mEntitiesNum(0) { }
 	// Destructor
 	~Paragraph() {}
 
 	bool operator==(const Paragraph& other) const {
-		return mPosition.high == other.mPosition.high && mPosition.low == other.mPosition.low && mCharsNum == other.mCharsNum && mCharacters == other.mCharacters;
+		return mPosition.high == other.mPosition.high && mPosition.low == other.mPosition.low && mEntitiesNum == other.mEntitiesNum && mEntities == other.mEntities;
 	}
 
 	// Getters
@@ -26,11 +26,11 @@ public:
 	//size_t GetStartIndex() const { /*return mStartIndex; }
 	//size_t GetEndIndex() const { return mEndIndex*/; }
 	size_t GetCharsNum() const;
-	const std::set<size_t>& GetCharacters() const;
+	const std::set<size_t>& GetEntities() const;
 
 	//Setters
 	//void SetCharsNum(size_t charsNum) { mCharsNum = charsNum; }
-	void SetCharacters(size_t character);
+	void SetEntities(size_t entity);
 
 
 private:
@@ -38,8 +38,8 @@ private:
 	Interval mPosition; // The position of the paragraph
 	//size_t mStartIndex;  // The start index of the paragraph
 	//size_t mEndIndex;  // The end index of the paragraph
-	size_t mCharsNum;  // The number of chars in the paragraph
-	std::set<size_t> mCharacters;  // The characters in the paragraph
+	size_t mEntitiesNum;  // The number of entities in the paragraph
+	std::set<size_t> mEntities;  // The entities in the paragraph
 
 
 };

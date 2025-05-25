@@ -3,9 +3,7 @@
 #include <memory>
 
 struct Interval {
-
 	int low, high;
-
 };
 
 class Node

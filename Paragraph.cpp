@@ -1,12 +1,12 @@
 #include "Paragraph.h"
 
 
-const std::set<size_t>& Paragraph::GetCharacters() const {
-	return mCharacters; 
+const std::set<size_t>& Paragraph::GetEntities() const {
+	return mEntities; 
 }
 
 size_t Paragraph::GetCharsNum() const { 
-	return mCharsNum;
+	return mEntitiesNum;
 }
 
 Interval  Paragraph::GetPosition() const { 
@@ -17,7 +17,7 @@ Interval  Paragraph::GetPosition() const {
 //	return mText;
 //}
 
-void Paragraph::SetCharacters(size_t character) {
-	mCharacters.insert(character); 
-	mCharsNum++; 
+void Paragraph::SetEntities(size_t entity) {
+	mEntities.insert(entity);
+	mEntitiesNum++; 
 }

@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <unordered_map>
+#include <map>
 
 
 class TextRanker {
@@ -23,20 +25,20 @@ public:
 
      ~TextRanker() { }
 
-     std::vector<std::string> ExtractKeyParagraphs(const std::string& input, std::vector< std::pair<int, int>> paragraphs, std::vector<std::vector<std::pair<int, int>>> characters, int topK);
+     std::map<int, std::set<size_t>> ExtractKeyParagraphs(const std::string& input, std::vector< std::pair<int, int>> paragraphs, std::vector<std::vector<std::pair<int, int>>> entities, int topK);
 
 private:
     bool ExtractParagraphs(const std::string& input, std::vector<std::pair<int, int>> paragraphs, std::vector<Paragraph>& output);
     bool RemoveDuplicates(const std::vector<Paragraph>& input, std::vector<Paragraph>& output);
-    bool BuildGraph(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>>& characters);
+    bool BuildGraph(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>>& entities);
     double GetSimilarity(int a, int b);
     bool CalcParagraphScores();
-    bool InitCharsList(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>> characters);
+    bool InitCharsList(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>> entities);
     //void StringReplaceAll(std::string& str, const std::string& from, const std::string& to);
 
 //private:
 	std::string mInput;  // The input text
-	std::vector<std::vector<Interval>> mCharacters;  // The location of characters in the input text
+	std::vector<std::vector<Interval>> mEntities;  // The location of characters in the input text
 
     double m_d;  // The parameter d in the iteration formula
 	int mMaxIter;   // Maximum number of iterations

@@ -28,7 +28,7 @@ int main() {
 		{801, 900},
 		{901, 1000}
 	};
-	std::vector<std::vector<std::pair<int, int>>> characters = {
+	std::vector<std::vector<std::pair<int, int>>> entities = {
 		{
 {327, 331},
 		  {508, 512},
@@ -306,11 +306,11 @@ int main() {
 } };
 
 	// לסדר שמספר הפסקאות המחולצות יהיו לפי אחוזים
-	std::vector<std::string> outputs = textRanker.ExtractKeyParagraphs(input, paragraphs, characters, 25);
+	std::map<int, std::set<size_t>> outputs = textRanker.ExtractKeyParagraphs(input, paragraphs, entities, 25);
 	std::cout << "Extracted Paragraphs:\n";
-	for (const std::string& para : outputs) {
-		std::cout << para << "\n\n\n\n";
-	}
+	//for (const std::string& para : outputs) {
+	//	std::cout << para << "\n\n\n\n";
+	//}
 
 	return 0;
 }
