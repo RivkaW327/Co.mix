@@ -14,9 +14,9 @@ namespace py = pybind11;
 PYBIND11_MODULE(textranker, m) {
     py::class_<TextRanker>(m, "TextRanker")
         .def(py::init<>())
-        .def(py::init<double, int, double>())
         .def("ExtractKeyParagraphs", &TextRanker::ExtractKeyParagraphs,
-            "A function that takes a chapter and entities and returns the K most important paragraphs in the chapter");
+            "A function that takes a chapter and entities and returns the K most important paragraphs in the chapter",
+            py::arg("input"), py::arg("paragraphs"), py::arg("entities"), py::arg("topK"));
 
     py::class_<Interval>(m, "Interval")
         .def(py::init<>())

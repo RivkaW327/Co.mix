@@ -17,17 +17,43 @@ int main() {
 	TextRanker textRanker;
 	std::string input = loadTextFile("text.txt");
 	std::vector <std::pair<int, int>> paragraphs = {
-		{0, 100},
-		{101, 200},
-		{201, 300},
-		{301, 400},
-		{401, 500},
-		{501, 600},
-		{601, 700},
-		{701, 800},
-		{801, 900},
-		{901, 1000}
+  {0, 21},
+  {21, 1434},
+  {1434, 1935},
+  {1935, 1968},
+  {1968, 2781},
+  {2781, 2878},
+  {2878, 3268},
+  {3268, 3454},
+  {3454, 3831},
+  {3831, 4395},
+  {4395, 4428},
+  {4428, 4584},
+  {4584, 5401},
+  {5401, 5530},
+  {5530, 6069},
+  {6069, 6734},
+  {6734, 6796},
+  {6796, 6816},
+  {6816, 6849},
+  {6849, 6910},
+  {6910, 7044},
+  {7044, 7178},
+  {7178, 7283},
+  {7283, 7670},
+  {7670, 7735},
+  {7735, 7809},
+  {7809, 8528},
+  {8528, 8819},
+  {8819, 9143},
+  {9143, 9334},
+  {9334, 9367},
+  {9367, 9885},
+  {9885, 10145},
+  {10145, 10817},
+  {10817, 11371}
 	};
+
 	std::vector<std::vector<std::pair<int, int>>> entities = {
 		{
 {327, 331},
@@ -308,6 +334,12 @@ int main() {
 	// לסדר שמספר הפסקאות המחולצות יהיו לפי אחוזים
 	std::map<int, std::set<size_t>> outputs = textRanker.ExtractKeyParagraphs(input, paragraphs, entities, 25);
 	std::cout << "Extracted Paragraphs:\n";
+	for (auto& m : outputs) {
+		std::cout << m.first << ": size= " << m.second.size() <<std::endl;
+	}
+
+	std::cout << "output size " << outputs.size() << std::endl;
+
 	//for (const std::string& para : outputs) {
 	//	std::cout << para << "\n\n\n\n";
 	//}

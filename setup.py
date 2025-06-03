@@ -11,7 +11,8 @@ ext_modules = [
             "bindings.cpp",
             'text_ranker.cpp',
             'Paragraph.cpp',
-            'IntervalTree.cpp'
+            'IntervalTree.cpp',
+            'IntervalTreeWrapper.cpp'
         ],
         include_dirs=[
             pybind11.get_include(),

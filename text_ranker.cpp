@@ -53,14 +53,16 @@ static std::vector<Paragraph> BuildParagraphs(const std::string& str, const std:
 
 static bool PairComp(std::pair<int, double> a, std::pair<int, double> b) 
 {
-    //return a.second > b.second;
-    return a.second < b.second;
+    return a.second > b.second;
+    //return a.second < b.second;
 }
 
 // שיחזיר גם רשימת ישויות שנמצאה עבור כל פסקה
 std::map<int, std::set<size_t>> TextRanker::ExtractKeyParagraphs(const std::string& input, std::vector< std::pair<int, int>> paragraphs, std::vector<std::vector<std::pair<int, int>>> entities, int topK)
 {
+
     std::map<int, std::set<size_t>> outputs;
+
     //outputs.clear();
     if(input.empty() || topK < 1) {
         return outputs;
@@ -98,10 +100,12 @@ std::map<int, std::set<size_t>> TextRanker::ExtractKeyParagraphs(const std::stri
 	//quickSort(visitPairs, 0, visitPairs.size() - 1, PairComp); // Sort the pairs based on the score
     std::sort(visitPairs.begin(), visitPairs.end(), PairComp);
 
+
     for(int i=0; i<topK && i<kDim; ++i) {
         int id = visitPairs[i].first;
         outputs[id] = this->mParagraphs[id].GetEntities();
     }
+
     return outputs;
 }
 
@@ -129,6 +133,7 @@ bool TextRanker::ExtractParagraphs(const std::string& input,std::vector<std::pai
     //    std::string punc = punctuations[i];
     //    StringReplaceAll(tempInput, punc, ".");
     //}
+
 
     // Paragraph segmentation
     static const int minParagraphLen = 40;   // Minimum number of entities in a sentence (need to consider word separators, UTF encoding, etc.)
@@ -165,10 +170,9 @@ bool TextRanker::ExtractParagraphs(const std::string& input,std::vector<std::pai
 //    return true;
 //}
 
-bool TextRanker::BuildGraph(std::vector<Paragraph>& paragraphs,const std::vector<std::vector<Interval>>& entities)
+bool TextRanker::BuildGraph(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>>& entities)
 {
     if (paragraphs.empty()) { return false; }
-
     int kDim = paragraphs.size();
 
     // Calculate the adjacency matrix
@@ -216,7 +220,7 @@ bool TextRanker::InitCharsList(std::vector<Paragraph>& paragraphs, const std::ve
     for (size_t i = 0; i < (int)paragraphs.size(); i++)
     {
         //ints.push_back(paragraphs[i].GetPosition());
-        root = Node::insertTree(std::move(root), std::make_unique<Node>(i, paragraphs[i].GetPosition()));
+        root = Node::insertTree(std::move(root), std::make_shared<Node>(i, paragraphs[i].GetPosition()));
     }
     root->inorder();
 	// check the intervals
