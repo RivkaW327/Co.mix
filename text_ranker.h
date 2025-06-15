@@ -1,8 +1,4 @@
 #pragma once
-
-//#ifndef TEXT_RANKER_H
-//#define TEXT_RANKER_H
-
 #include <string>
 #include <vector>
 #include <set>
@@ -34,9 +30,7 @@ private:
     double GetSimilarity(int a, int b);
     bool CalcParagraphScores();
     bool InitCharsList(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>> entities);
-    //void StringReplaceAll(std::string& str, const std::string& from, const std::string& to);
 
-//private:
 	std::string mInput;  // The input text
 	std::vector<std::vector<Interval>> mEntities;  // The location of characters in the input text
 
@@ -47,7 +41,4 @@ private:
     std::vector< std::vector<double>> mAdjacencyMatrix;  // Adjacency Matrix
     std::vector<double> mOutWeightSum;  // The weight of each node’s outbound link 
     std::vector<double> mScores;  // The score of each node
-    //std::vector< std::set<std::string> > mWordSets;    // The set of words each sentence contains
 };
-
-//#endif

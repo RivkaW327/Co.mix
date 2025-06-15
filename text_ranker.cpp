@@ -18,46 +18,12 @@ static std::vector<Paragraph> BuildParagraphs(const std::string& str, const std:
 }
 
 
-//static std::vector<Paragraph> split_with_positions(const std::string& str, const std::string& delimiter) {
-//    std::vector<Paragraph> tokens;
-//    size_t start = 0, end = 0;
-//    Interval intr;
-//    while ((end = str.find(delimiter, start)) != std::string::npos) {
-//        intr.low = start;
-//        intr.high = end;
-//        tokens.push_back(Paragraph(intr));
-//        start = end + delimiter.length();
-//    }
-//    if (start < str.length()) {
-//        intr.low = start;
-//        intr.high = str.length();
-//        tokens.push_back(Paragraph(intr));
-//    }
-//    return tokens;
-//}
-
-//static std::vector<std::string> split(const std::string& str, const std::string& delimiter) {
-//    std::vector<std::string> tokens;
-//    size_t start = 0, end = 0;
-//    while ((end = str.find(delimiter, start)) != std::string::npos) {
-//        tokens.push_back(str.substr(start, end - start));
-//        start = end + delimiter.length();
-//    }
-//    if (start < str.length()) {
-//        tokens.push_back(str.substr(start));
-//    }
-//    return tokens;
-//}
-
-
-
 static bool PairComp(std::pair<int, double> a, std::pair<int, double> b) 
 {
     return a.second > b.second;
     //return a.second < b.second;
 }
 
-// שיחזיר גם רשימת ישויות שנמצאה עבור כל פסקה
 std::map<int, std::set<size_t>> TextRanker::ExtractKeyParagraphs(const std::string& input, std::vector< std::pair<int, int>> paragraphs, std::vector<std::vector<std::pair<int, int>>> entities, int topK)
 {
 
@@ -125,14 +91,6 @@ bool TextRanker::ExtractParagraphs(const std::string& input,std::vector<std::pai
     } else {
         tempInput = input;
     }
-    //std::transform(tempInput.begin(), tempInput.end(), tempInput.begin(), ::tolower);
-
-    // Replace all sentence ending punctuation with `.`
-    //static const std::string punctuations[] = {"?", "!", ".", ";", "？", "！", "。", "；", "……", "…", "\n"};
-    //for (int i=0; i<(int)(sizeof(punctuations)/sizeof(punctuations[0])); ++i){
-    //    std::string punc = punctuations[i];
-    //    StringReplaceAll(tempInput, punc, ".");
-    //}
 
 
     // Paragraph segmentation
@@ -159,16 +117,6 @@ bool TextRanker::ExtractParagraphs(const std::string& input,std::vector<std::pai
     return true;
 }
 
-//bool TextRanker::RemoveDuplicates(const std::vector<Paragraph>& inputs, std::vector<Paragraph>& outputs)
-//{
-//    outputs.clear();
-//
-//    // לבדוק עד כמה נכון לעשות סט של אובייקטים בשביל למנוע כפילויות
-//    std::unordered_set<Paragraph> s(inputs.begin(), inputs.end());
-//    outputs = std::vector<Paragraph>(s.begin(), s.end());  
-//
-//    return true;
-//}
 
 bool TextRanker::BuildGraph(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>>& entities)
 {
@@ -230,9 +178,7 @@ bool TextRanker::InitCharsList(std::vector<Paragraph>& paragraphs, const std::ve
         {
             Node* res = root->overlapSearch(entities[i][j]);
             if (res == nullptr)
-                // צריך לבדוק מה לעשות במקרה של דמות שחוצה את הפסקאות
                 std::cout << "\nNo overlaps ["<< entities[i][j].low<<" , "<< entities[i][j].high<<"]\n";
-                // לסדר שאם הוא נמצא בשתיהם אז הקשת שלהם תקבל ניקוד גבוה.
             else
                 paragraphs[res->GetParagraphIndex()].SetEntities(i);
 
@@ -247,13 +193,6 @@ double TextRanker::GetSimilarity(int a, int b)
     if (mParagraphs[a].GetCharsNum() == 0 || mParagraphs[b].GetCharsNum() == 0) {
         return 0.0;
     }
-
-    //int commonChars = 0;
-    /*for (int val : mParagraphs[a].GetEntities()) {
-        if (mParagraphs[b].GetEntities().count(val) > 0) {
-            commonChars++;
-        }
-    }*/
 
     std::vector<size_t> commonChars;
 	std::set_intersection(
@@ -313,22 +252,3 @@ bool TextRanker::CalcParagraphScores()
     // std::cout << "iterNum: " << iterNum << "\n";
     return true;
 }
-
-//void TextRanker::StringReplaceAll(std::string& str, const std::string& from, const std::string& to) {
-//    if (from.empty()) { return; }
-//
-//    bool isToContainFrom = false;   // In case 'to' contains 'from', like replacing 'x' with 'yx'
-//    if (to.find(from, 0) != std::string::npos) {
-//        isToContainFrom = true;
-//    }
-//
-//    size_t start_pos = 0;
-//    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
-//        str.replace(start_pos, from.length(), to);
-//        if (isToContainFrom) {
-//            start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
-//        }
-//    }
-//}
-
-

@@ -13,10 +13,6 @@ Interval  Paragraph::GetPosition() const {
 	return mPosition;
 }
 
-//const std::string& Paragraph::GetText() const { 
-//	return mText;
-//}
-
 void Paragraph::SetEntities(size_t entity) {
 	mEntities.insert(entity);
 	mEntitiesNum++; 

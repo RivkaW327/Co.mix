@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="setup.py" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="text.txt" />

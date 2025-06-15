@@ -145,6 +145,7 @@
     <ClInclude Include="text_ranker.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="setup.py" />
   </ItemGroup>
   <ItemGroup>
