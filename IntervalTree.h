@@ -7,7 +7,6 @@ struct Interval {
 };
 
 class Node
-
 {
 public:
 	int Getheight();

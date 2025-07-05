@@ -30,6 +30,7 @@ private:
     double GetSimilarity(int a, int b);
     bool CalcParagraphScores();
     bool InitCharsList(std::vector<Paragraph>& paragraphs, const std::vector<std::vector<Interval>> entities);
+	float ParagraphScoreByPosition(int position, int totalParagraphs) const;
 
 	std::string mInput;  // The input text
 	std::vector<std::vector<Interval>> mEntities;  // The location of characters in the input text

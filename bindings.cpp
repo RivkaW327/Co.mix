@@ -24,7 +24,7 @@ PYBIND11_MODULE(textranker, m) {
         .def_readwrite("low", &Interval::low)
         .def_readwrite("high", &Interval::high);
 
-    // השתמש ב-wrapper במקום בצומת ישירות
+
     py::class_<IntervalTreeWrapper>(m, "IntervalTree")
         .def(py::init<>())
         .def("insert", py::overload_cast<const Interval&>(&IntervalTreeWrapper::insert),
