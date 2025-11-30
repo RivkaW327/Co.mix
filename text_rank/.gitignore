@@ -1,0 +1,21 @@
+# compiled stuff
+*.pyd
+*.log
+*.tlog
+*.obj
+*.exe
+*.out
+*.o
+*.obj
+*.class
+*.dll
+*.so
+
+# build dirs
+build/
+Debug/
+Release/
+out/
+dist/
+__pycache__/
+node_modules/
