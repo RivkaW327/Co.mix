@@ -90,8 +90,3 @@ env/
 
 # MacOS
 .DS_Store
-
-# Keep source code files
-*.py
-*.txt
-README*
