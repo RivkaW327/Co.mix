@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Node">
+    <Position X="7" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAUACAgAACAgQAAAAAgCAAAAAIyQAAIAACAAEAgAA=</HashCode>
+      <FileName>IntervalTree.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IntervalTreeWrapper">
+    <Position X="9" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgABAAgAAAAAgAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>IntervalTreeWrapper.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Paragraph">
+    <Position X="5" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAACEAAQAQAAAAAQAAAAAAABAAAAACAAAQAgA=</HashCode>
+      <FileName>Paragraph.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextRanker">
+    <Position X="2.75" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAEAAAACABQAAAAAAAEAQYBAAAYAKAAACAAEAAEA=</HashCode>
+      <FileName>text_ranker.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Interval">
+    <Position X="9" Y="4" Width="1.5" />
+    <Members>
+      <Field Name="high" Hidden="true" />
+      <Field Name="low" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IntervalTree.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

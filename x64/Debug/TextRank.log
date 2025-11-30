@@ -1,0 +1,21 @@
+﻿  IntervalTree.cpp
+C:\Users\user\Documents\year2\project\TextRank\TextRank\IntervalTree.cpp(170,16): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  IntervalTreeWrapper.cpp
+  main.cpp
+  Paragraph.cpp
+  bindings.cpp
+  text_ranker.cpp
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(62,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(126,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(161,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(195,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(202,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(203,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(207,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(210,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(212,18): warning C4804: '<=': unsafe use of type 'bool' in operation
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(213,20): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\user\Documents\year2\project\TextRank\TextRank\text_ranker.cpp(249,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+     Creating library C:\Users\user\Documents\year2\project\TextRank\x64\Debug\TextRank.lib and object C:\Users\user\Documents\year2\project\TextRank\x64\Debug\TextRank.exp
+  TextRank.vcxproj -> C:\Users\user\Documents\year2\project\TextRank\x64\Debug\TextRank.exe
