@@ -19,3 +19,5 @@ out/
 dist/
 __pycache__/
 node_modules/
+x64/
+build/
