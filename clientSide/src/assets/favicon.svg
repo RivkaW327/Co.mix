@@ -1,0 +1,9 @@
+<svg width="32" height="32" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M60 10C30 10 10 30 10 60C10 90 30 110 60 110C90 110 110 90 110 60C110 30 90 10 60 10Z" fill="white" stroke="black" stroke-width="4"/>
+  <path d="M30 40L20 30L30 20L40 30L30 40Z" fill="#0092DC" stroke="black" stroke-width="2"/>
+  <path d="M90 40L80 30L90 20L100 30L90 40Z" fill="#E63946" stroke="black" stroke-width="2"/>
+  <path d="M30 80L20 90L30 100L40 90L30 80Z" fill="#00B74A" stroke="black" stroke-width="2"/>
+  <path d="M90 80L80 90L90 100L100 90L90 80Z" fill="#FFAA00" stroke="black" stroke-width="2"/>
+  <path d="M60 40L40 60L60 80L80 60L60 40Z" fill="#white" stroke="black" stroke-width="3"/>
+  <text x="60" y="65" font-family="Bangers, cursive" font-size="14" text-anchor="middle" fill="black">CO.MIX</text>
+</svg>
